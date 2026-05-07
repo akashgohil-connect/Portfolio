@@ -1,257 +1,259 @@
+# Updated Resume Code — Based on Latest Resume
+
+```html
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Akash Gohil — Resume</title>
   <style>
+    body {
+      font-family: Inter, Arial, sans-serif;
+      max-width: 900px;
+      margin: auto;
+      padding: 40px;
+      color: #1a1a1a;
+      line-height: 1.6;
+      background: #ffffff;
+    }
 
-html {
-color: #1a1a1a;
-background-color: #fdfdfd;
-}
-body {
-margin: 0 auto;
-max-width: 36em;
-padding-left: 50px;
-padding-right: 50px;
-padding-top: 50px;
-padding-bottom: 50px;
-hyphens: auto;
-overflow-wrap: break-word;
-text-rendering: optimizeLegibility;
-font-kerning: normal;
-}
-@media (max-width: 600px) {
-body {
-font-size: 0.9em;
-padding: 12px;
-}
-h1 {
-font-size: 1.8em;
-}
-}
-@media print {
-html {
-background-color: white;
-}
-body {
-background-color: transparent;
-color: black;
-font-size: 12pt;
-}
-p, h2, h3 {
-orphans: 3;
-widows: 3;
-}
-h2, h3, h4 {
-page-break-after: avoid;
-}
-}
-p {
-margin: 1em 0;
-}
-a {
-color: #1a1a1a;
-}
-a:visited {
-color: #1a1a1a;
-}
-img {
-max-width: 100%;
-}
-svg {
-height: auto;
-max-width: 100%;
-}
-h1, h2, h3, h4, h5, h6 {
-margin-top: 1.4em;
-}
-h5, h6 {
-font-size: 1em;
-font-style: italic;
-}
-h6 {
-font-weight: normal;
-}
-ol, ul {
-padding-left: 1.7em;
-margin-top: 1em;
-}
-li > ol, li > ul {
-margin-top: 0;
-}
-blockquote {
-margin: 1em 0 1em 1.7em;
-padding-left: 1em;
-border-left: 2px solid #e6e6e6;
-color: #606060;
-}
-code {
-white-space: pre-wrap;
-font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-font-size: 85%;
-margin: 0;
-hyphens: manual;
-}
-pre {
-margin: 1em 0;
-overflow: auto;
-}
-pre code {
-padding: 0;
-overflow: visible;
-overflow-wrap: normal;
-}
-.sourceCode {
-background-color: transparent;
-overflow: visible;
-}
-hr {
-border: none;
-border-top: 1px solid #1a1a1a;
-height: 1px;
-margin: 1em 0;
-}
-table {
-margin: 1em 0;
-border-collapse: collapse;
-width: 100%;
-overflow-x: auto;
-display: block;
-font-variant-numeric: lining-nums tabular-nums;
-}
-table caption {
-margin-bottom: 0.75em;
-}
-tbody {
-margin-top: 0.5em;
-border-top: 1px solid #1a1a1a;
-border-bottom: 1px solid #1a1a1a;
-}
-th {
-border-top: 1px solid #1a1a1a;
-padding: 0.25em 0.5em 0.25em 0.5em;
-}
-td {
-padding: 0.125em 0.5em 0.25em 0.5em;
-}
-header {
-margin-bottom: 4em;
-text-align: center;
-}
-#TOC li {
-list-style: none;
-}
-#TOC ul {
-padding-left: 1.3em;
-}
-#TOC > ul {
-padding-left: 0;
-}
-#TOC a:not(:hover) {
-text-decoration: none;
-}
-span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    h1 {
+      font-size: 40px;
+      margin-bottom: 4px;
+    }
 
-ul.task-list[class]{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-font-size: inherit;
-width: 0.8em;
-margin: 0 0.8em 0.2em -1.6em;
-vertical-align: middle;
-}
-.display.math{display: block; text-align: center; margin: 0.5rem auto;}
-</style>
+    h2 {
+      margin-top: 40px;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 8px;
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    h3 {
+      margin-bottom: 4px;
+      font-size: 18px;
+    }
+
+    p {
+      margin: 6px 0;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    .header {
+      margin-bottom: 30px;
+    }
+
+    .role {
+      font-size: 20px;
+      color: #4b5563;
+      margin-bottom: 12px;
+    }
+
+    .links {
+      color: #374151;
+      font-size: 14px;
+    }
+
+    .section {
+      margin-top: 24px;
+    }
+
+    .company-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .company-row span {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .skill-category {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      padding: 16px;
+      border-radius: 12px;
+    }
+
+    .skill-category strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
 </head>
 <body>
-<header id="title-block-header">
-<h1 class="title">Akash Gohil — Resume</h1>
-</header>
-<p><strong>Akash Gohil</strong></p>
-<p>Product Designer &amp; Design Engineer</p>
-<p>akashgohil.connect@gmail.com · +91 77386 32726 · <a href="https://linkedin.com/in/akashgohil"><u>linkedin.com/in/akashgohil</u></a>
-· <a href="https://medium.com/@akashgohil.connect"><u>medium.com/@akashgohil.connect</u></a></p>
-<p><strong>PROFILE</strong></p>
-<p>Product designer with nearly 2 years of experience designing and
-shipping enterprise B2B SaaS and computer vision platforms for
-industrial clients across India. Skilled in end-to-end product design,
-design system architecture, user research, and front-end implementation
-in React and TypeScript. Bridges design and engineering through
-code-first workflows, design tokens, and component-driven
-development.</p>
-<p><strong>EXPERIENCE</strong></p>
-<p><strong>Product Designer</strong> · Faclon Labs Jul 2025 –
-Present</p>
-<ul>
-<li><p><strong>Led end-to-end product design</strong> for I/O Vision, a
-computer vision SaaS platform deployed at industrial plants across
-India. Owned user research with plant managers and supervisors,
-information architecture, interaction design, and visual design across
-three core modules: Camera View, Map View, and Smart View.</p></li>
-<li><p><strong>Designed and documented a 47-component design
-system</strong> for I/O Vision in Figma, including design tokens (color,
-typography, spacing, elevation), iconography, motion principles, and
-component variants. Established naming conventions and dev handoff specs
-adopted by the engineering team.</p></li>
-<li><p><strong>Architected the Faclon Labs Design System,</strong> a
-portfolio-wide design system spanning all React-based products. Built a
-two-layer token architecture (primitive and semantic), light and dark
-theming from day one, and components mirrored 1:1 between Figma and
-React. Adopted across the company’s modern product suite.</p></li>
-<li><p><strong>Shipped a production React and TypeScript design system
-codebase</strong> using Claude Code, Figma MCP, and Figma Console MCP.
-Delivered TypeScript components, Storybook stories, MDX documentation,
-ESLint rules, and a custom MCP server exposing design tokens and
-components to AI coding agents organization-wide.</p></li>
-<li><p><strong>Reduced design-to-production time</strong> for new
-components from 2-3 sprints to a single day by owning the full Figma to
-Storybook to pull-request pipeline. Replaced design handoff meetings and
-pixel-diff reviews with code-based PR reviews.</p></li>
-</ul>
-<p><strong>UI/UX Designer</strong> · Faclon Labs Feb 2025 – Jun 2025</p>
-<ul>
-<li><p>Redesigned legacy platform features to align with current design
-standards while preserving brand identity, working within constrained
-design language and engineering capacity.</p></li>
-<li><p>Identified gaps in the legacy design language and built the
-internal case for the new company-wide design system.</p></li>
-</ul>
-<p><strong>Graphic Designer</strong> · Bounce Inc. Jul 2024 – Aug
-2024</p>
-<ul>
-<li><p>Designed marketing assets including banners, social media
-creatives, and brand visuals for digital campaigns.</p></li>
-</ul>
-<p><strong>SKILLS &amp; TOOLS</strong></p>
-<p><strong>UX &amp; Product</strong> User research, usability testing,
-information architecture, interaction design, wireframing, prototyping,
-user flows, journey mapping</p>
-<p><strong>Visual Design</strong> Typography, layout, color systems,
-iconography, motion, responsive design</p>
-<p><strong>Design Systems</strong> Design tokens (primitive and
-semantic), atomic design, component libraries, light and dark theming,
-accessibility (WCAG, ARIA), documentation, dev handoff</p>
-<p><strong>Front-End</strong> React, TypeScript, JavaScript, HTML, CSS,
-Storybook, MDX, Git, GitHub, npm, component architecture, design-to-code
-workflows</p>
-<p><strong>AI Tools</strong> Claude Code, Figma MCP, OpenAI Codex,
-Cursor, Figma Make, Vercel V0, Lovable.ai, MCP server development</p>
-<p><strong>Design Tools</strong> Figma, FigJam, Adobe Photoshop,
-Illustrator, Notion</p>
-<p><strong>Methodologies</strong> Agile, Scrum, design thinking,
-cross-functional collaboration</p>
-<p><strong>EDUCATION</strong></p>
-<p><strong>B.Tech, Information Technology</strong><em>, K.J. Somaiya
-Institute of Technology</em> CGPA 9.03 · 2022–2025</p>
-<p><strong>Diploma in Information Technology</strong><em>, Shri
-Bhagubhai Mafatlal Polytechnic</em> CGPA 8.9 · 2019–2022</p>
-<p><strong>Languages English</strong> Professional ·
-<strong>Hindi</strong> Native · <strong>Gujarati</strong> Native ·
-<strong>Marathi</strong> Conversational</p>
+
+  <div class="header">
+    <h1>Akash Gohil</h1>
+    <div class="role">Product Designer & Design Systems Engineer</div>
+
+    <div class="links">
+      Mumbai, India • akashgohil.connect@gmail.com • +91 77386 32726<br/>
+      Portfolio • LinkedIn • Medium
+    </div>
+  </div>
+
+  <section class="section">
+    <h2>Profile</h2>
+
+    <p>
+      Product designer and design systems engineer with nearly 2 years of experience designing and shipping enterprise SaaS products across multiple platforms at Faclon Labs. Works across the full stack of product design, from interaction design and Figma systems to production React components, with a focus on reducing design-to-production time and helping engineering teams move faster.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Experience</h2>
+
+    <div>
+      <div class="company-row">
+        <h3>Product Designer · Faclon Labs</h3>
+        <span>Jul 2025 – Present</span>
+      </div>
+
+      <ul>
+        <li>
+          Built a design-to-code pipeline using Claude Code, Figma MCP, and a custom MCP server, adopted company-wide, cutting component delivery from 2–3 sprints to 1 day and eliminating handoff meetings entirely.
+        </li>
+
+        <li>
+          Shipped Aura AI, a multi-agent voice assistant, from scratch in 2 days using Claude Code and MCP, with custom voice settings, model selection, reasoning prompts, and per-agent customization.
+        </li>
+
+        <li>
+          Built the Flask Design System in React + TypeScript with 60+ production components, Storybook stories, MDX docs, and ESLint rules, adopted company-wide across all modern Faclon products.
+        </li>
+
+        <li>
+          Built a custom MCP server exposing the Flask Design System to all vibe-coded applications, letting developers pull production components and tokens directly into new products.
+        </li>
+
+        <li>
+          Overhauled I/O Vision across 3 core modules (Camera View, Map View, Smart View), designing a 47-component Figma system with full dev handoff specs.
+        </li>
+
+        <li>
+          Standardized the Faclon Design System across 30–40 components, implementing consistent tokens, theming, and variants.
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="company-row">
+        <h3>UI/UX Designer · Faclon Labs</h3>
+        <span>Feb 2025 – Jun 2025</span>
+      </div>
+
+      <ul>
+        <li>
+          Redesigned legacy platform features to meet current design standards, preserving brand identity and reducing visual inconsistencies.
+        </li>
+
+        <li>
+          Identified gaps in the legacy design language and secured stakeholder buy-in that led to the Faclon Labs Design System launch.
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="company-row">
+        <h3>Graphic Designer · Bounce Inc.</h3>
+        <span>Jul 2024 – Aug 2024</span>
+      </div>
+
+      <ul>
+        <li>
+          Produced marketing assets across banners, social creatives, and brand visuals for digital campaigns.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Skills & Tools</h2>
+
+    <div class="skills-grid">
+      <div class="skill-category">
+        <strong>Product Design</strong>
+        Information architecture, interaction design, wireframing, prototyping, usability testing
+      </div>
+
+      <div class="skill-category">
+        <strong>Design Systems</strong>
+        Design tokens, component libraries, light/dark theming, accessibility (WCAG, ARIA), dev handoff
+      </div>
+
+      <div class="skill-category">
+        <strong>Frontend</strong>
+        React, TypeScript, Storybook, MDX, Git, GitHub, component architecture
+      </div>
+
+      <div class="skill-category">
+        <strong>AI & Tools</strong>
+        Claude Code, Cursor, Figma MCP, Vercel V0, MCP server development, Figma, Notion
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Education</h2>
+
+    <div>
+      <div class="company-row">
+        <h3>B.Tech, Information Technology · K.J. Somaiya Institute of Technology</h3>
+        <span>2022 – 2025</span>
+      </div>
+
+      <p>CGPA 9.03</p>
+    </div>
+
+    <div>
+      <div class="company-row">
+        <h3>Diploma, Information Technology · Shri Bhagubhai Mafatlal Polytechnic</h3>
+        <span>2019 – 2022</span>
+      </div>
+
+      <p>CGPA 8.9</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Languages</h2>
+
+    <p>
+      English Professional • Hindi Native • Gujarati Native • Marathi Conversational
+    </p>
+  </section>
+
 </body>
 </html>
+```
+
+Updated using the latest resume details from your uploaded resume. fileciteturn0file0
