@@ -1,5 +1,5 @@
 {
-  "name": "akash-portfolio-scaffold",
+  "name": "akash-portfolio",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,12 +9,20 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "@tailwindcss/typography": "^0.5.19",
+    "dompurify": "^3.4.2",
+    "framer-motion": "^12.38.0",
+    "jsdom": "^29.1.1",
+    "lucide-react": "^1.14.0",
     "next": "16.2.4",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/jsdom": "^28.0.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

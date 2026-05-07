@@ -1,26 +1,226 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Light palette */
+  --bg: #ebe8e1;
+  --bg-grid: rgba(0, 0, 0, 0.04);
+  --surface: #ffffff;
+  --surface-muted: #f5f3ee;
+  --border: rgba(0, 0, 0, 0.10);
+  --border-strong: rgba(0, 0, 0, 0.18);
+  --foreground: #15140f;
+  --foreground-muted: #6b6a64;
+  --foreground-subtle: #9a9892;
+  --accent: #2b6cb0;
+  --accent-foreground: #ffffff;
+  --danger: #d24545;
+  --warning: #e0a23a;
+  --success: #4caf50;
+  --shadow-window:
+    0 0 0 0.5px rgba(0, 0, 0, 0.18),
+    0 12px 28px -8px rgba(0, 0, 0, 0.18),
+    0 24px 48px -12px rgba(0, 0, 0, 0.10);
+  --shadow-window-focused:
+    0 0 0 0.5px rgba(0, 0, 0, 0.22),
+    0 16px 40px -8px rgba(0, 0, 0, 0.28),
+    0 32px 64px -16px rgba(0, 0, 0, 0.18);
+
+  --radius-window: 12px;
+  --radius-card: 8px;
+  --radius-control: 6px;
+
+  --menubar-height: 28px;
+  --dock-height: 64px;
+
+  /* ───── Liquid Glass tokens (light) ──────────────────────────────────── */
+  --glass-blur: 24px;
+  --glass-saturate: 180%;
+
+  --glass-tint-thin: rgba(255, 255, 255, 0.55);
+  --glass-tint-strong: rgba(255, 255, 255, 0.70);
+  --glass-tint-pill: rgba(255, 255, 255, 0.80);
+  --glass-tint-dark: rgba(22, 22, 24, 0.62);
+
+  --glass-border-light: rgba(255, 255, 255, 0.40);
+  --glass-border-dark: rgba(255, 255, 255, 0.10);
+
+  --glass-highlight:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.65),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+  --glass-highlight-dark:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.10),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+
+  --glass-elev-1:
+    0 4px 24px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  --glass-elev-2:
+    0 12px 48px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+  --glass-elev-3:
+    0 24px 64px rgba(0, 0, 0, 0.16),
+    0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 @theme inline {
-  --color-background: var(--background);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-subtle: var(--foreground-subtle);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
-  background: var(--background);
+  background: var(--bg);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* Wallpaper: smooth-scaled image with a colour grade + vignette + top haze for
+   atmosphere. Sway animation lives on ::before; the ::after overlay holds
+   the vignette steady so the scene reads as deliberately lit, not pixelated. */
+.wallpaper {
+  position: relative;
+  background-color: #6cb8e8;
+}
+.wallpaper::before {
+  content: "";
+  position: absolute;
+  inset: -8px; /* small overscan so sway never reveals edges */
+  background-image: url("/Wallpaper/Wallpaper.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* Smooth bilinear scaling instead of pixelated nearest-neighbour. */
+  image-rendering: auto;
+  /* Subtle colour grade — slightly more contrast, juicier greens, a touch
+     darker so the foreground UI sits cleanly above. */
+  filter: contrast(1.06) saturate(1.12) brightness(0.95);
+  pointer-events: none;
+  animation: wallpaper-sway 7s ease-in-out infinite;
+  will-change: transform;
+}
+.wallpaper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    /* Soft white haze at the top — light-bleed under the menu bar. */
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 28%
+    ),
+    /* Vignette — corners darken, centre stays bright. */
+    radial-gradient(
+      ellipse at 50% 60%,
+      transparent 45%,
+      rgba(0, 0, 0, 0.32) 100%
+    );
+}
+
+@keyframes wallpaper-sway {
+  0%   { transform: translate3d(0, 0, 0)        scale(1); }
+  25%  { transform: translate3d(-2px, 1px, 0)   scale(1.004); }
+  50%  { transform: translate3d(2px, -1px, 0)   scale(1.006); }
+  75%  { transform: translate3d(-1px, 2px, 0)   scale(1.004); }
+  100% { transform: translate3d(0, 0, 0)        scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wallpaper::before {
+    animation: none;
+  }
+}
+
+/* ───── Liquid Glass utilities ────────────────────────────────────────
+   Borders are intentionally NOT set here — components decide which edges
+   to render so the inner highlight can be combined with a single bottom
+   border on titlebars, all four sides on floating panels, etc. */
+.glass-thin,
+.glass-strong,
+.glass-pill,
+.glass-dark {
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border-color: var(--glass-border-light);
+}
+
+.glass-thin {
+  background: var(--glass-tint-thin);
+  box-shadow: var(--glass-highlight), var(--glass-elev-1);
+}
+
+.glass-strong {
+  background: var(--glass-tint-strong);
+  box-shadow: var(--glass-highlight), var(--glass-elev-2);
+}
+
+.glass-pill {
+  background: var(--glass-tint-pill);
+  box-shadow: var(--glass-highlight), var(--glass-elev-1);
+}
+
+.glass-dark {
+  background: var(--glass-tint-dark);
+  border-color: var(--glass-border-dark);
+  color: #fff;
+  box-shadow: var(--glass-highlight-dark), var(--glass-elev-1);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-thin,
+  .glass-strong,
+  .glass-pill {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--surface);
+  }
+  .glass-dark {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--foreground);
+  }
+}
+
+/* Block native context menu on the desktop surface only — apps may opt back in. */
+.no-native-context {
+  -webkit-touch-callout: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
