@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/build-articles.mjs && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:articles": "node scripts/build-articles.mjs"
   },
   "dependencies": {
     "@mozilla/readability": "^0.6.0",

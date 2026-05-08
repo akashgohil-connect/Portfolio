@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@keyframes vinyl-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes title-marquee {
+  to { transform: translateX(-50%); }
+}
+
 :root {
   /* Light palette */
   --bg: #ebe8e1;

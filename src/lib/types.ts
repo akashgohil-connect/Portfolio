@@ -1,11 +1,10 @@
-import type { ComponentType } from "react";
+import type { ComponentType, ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 
 export type AppId =
   | "terminal"
   | "resume"
   | "browser"
-  | "personal"
   | "spotify"
   | "about";
 
@@ -21,6 +20,8 @@ export type AppDef = {
   minSize?: { width: number; height: number };
   /** Rendered inside the window body. */
   Component: ComponentType;
+  /** Optional render-prop for the right slot of the mobile back-bar header. */
+  mobileHeaderRight?: () => ReactNode;
   /** Show on the desktop. */
   desktop?: boolean;
   /** Show in the dock as a quick-launch. */

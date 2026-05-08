@@ -11,6 +11,7 @@ import {
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { APPS, APP_ORDER } from "@/lib/apps";
 import { DOCK_TOOLS, type DockTool } from "@/data/dock-tools";
+import { useIsMobile } from "@/hooks/useMediaQuery";
 import { useWindows } from "@/store/windows";
 
 const FAN_SPRING = { type: "spring" as const, stiffness: 700, damping: 32 };
@@ -192,6 +193,7 @@ function FanItem({ tool, index, total, fanOpen, mouseY, onActivate }: FanItemPro
 export function Dock() {
   const open = useWindows((s) => s.open);
   const windows = useWindows((s) => s.windows);
+  const isMobile = useIsMobile();
   const [fanOpen, setFanOpen] = useState(false);
   const fanRef = useRef<HTMLDivElement>(null);
   const toolsBtnRef = useRef<HTMLButtonElement>(null);
@@ -234,7 +236,7 @@ export function Dock() {
           mouseX.set(Number.POSITIVE_INFINITY);
           mouseY.set(Number.POSITIVE_INFINITY);
         }}
-        className="glass-strong pointer-events-auto flex h-[58px] items-end gap-2 rounded-2xl border px-3 pb-2"
+        className="glass-strong pointer-events-auto flex h-[58px] max-w-[calc(100vw-24px)] items-end gap-2 rounded-2xl border px-3 pb-2"
       >
         {APP_ORDER.map((id) => {
           const app = APPS[id];
@@ -280,39 +282,42 @@ export function Dock() {
           );
         })}
 
-        <span aria-hidden className="mb-1 h-7 w-px self-end bg-border" />
+        {!isMobile && (
+          <>
+            <span aria-hidden className="mb-1 h-7 w-px self-end bg-border" />
 
-        <div ref={fanRef} className="relative">
-          <DockSlot
-            mouseX={mouseX}
-            innerRef={toolsBtnRef}
-            onClick={() => setFanOpen((v) => !v)}
-            ariaLabel="Tools"
-            ariaExpanded={fanOpen}
-            tooltip="Tools"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/icons/tools.png"
-              alt=""
-              draggable={false}
-              className="h-[88%] w-[88%] select-none rounded-[22%] object-contain drop-shadow-sm"
-            />
-          </DockSlot>
+            <div ref={fanRef} className="relative">
+              <DockSlot
+                mouseX={mouseX}
+                innerRef={toolsBtnRef}
+                onClick={() => setFanOpen((v) => !v)}
+                ariaLabel="Tools"
+                ariaExpanded={fanOpen}
+                tooltip="Tools"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/icons/tools.png"
+                  alt=""
+                  draggable={false}
+                  className="h-[88%] w-[88%] select-none rounded-[22%] object-contain drop-shadow-sm"
+                />
+              </DockSlot>
 
-          {DOCK_TOOLS.map((tool, i) => (
-            <FanItem
-              key={tool.name}
-              tool={tool}
-              index={i}
-              total={DOCK_TOOLS.length}
-              fanOpen={fanOpen}
-              mouseY={mouseY}
-              onActivate={() => setFanOpen(false)}
-            />
-          ))}
-        </div>
-
+              {DOCK_TOOLS.map((tool, i) => (
+                <FanItem
+                  key={tool.name}
+                  tool={tool}
+                  index={i}
+                  total={DOCK_TOOLS.length}
+                  fanOpen={fanOpen}
+                  mouseY={mouseY}
+                  onActivate={() => setFanOpen(false)}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </motion.div>
     </nav>
   );

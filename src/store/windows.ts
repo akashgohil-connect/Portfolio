@@ -47,6 +47,26 @@ export const useWindows = create<WindowsState>((set, get) => ({
   windows: [],
   zCounter: 10,
   open: (id) => {
+    // Mobile: single-window UX — replace whatever's open with the new one.
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 768px)").matches;
+    if (isMobile) {
+      set((s) => ({
+        windows: [
+          {
+            id,
+            bounds: defaultBoundsFor(id, 0),
+            zIndex: s.zCounter + 1,
+            minimized: false,
+            maximized: false,
+          },
+        ],
+        zCounter: s.zCounter + 1,
+      }));
+      return;
+    }
+
     const existing = get().windows.find((w) => w.id === id);
     if (existing) {
       set((s) => ({

@@ -16,6 +16,16 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
+    slug: "design-system-ai-codebase",
+    title: "Flask Design System",
+    company: "Faclon Labs",
+    year: "2025",
+    blurb:
+      "Converted the production design system into an AI-friendly codebase using Claude Code & Codex.",
+    url: "https://medium.com/@akashgohil.connect/i-was-waiting-for-my-designs-to-ship-so-i-stopped-waiting-and-started-coding-6886e12b62c4",
+    mode: "external",
+  },
+  {
     slug: "io-vision",
     title: "I/O Vision",
     company: "Faclon Labs",
@@ -26,18 +36,8 @@ export const PROJECTS: Project[] = [
     mode: "external",
   },
   {
-    slug: "design-system-ai-codebase",
-    title: "Design System → AI-ready Codebase",
-    company: "Faclon Labs",
-    year: "2025",
-    blurb:
-      "Converted the production design system into an AI-friendly codebase using Claude Code & Codex.",
-    url: "https://medium.com/@akashgohil.connect/i-was-waiting-for-my-designs-to-ship-so-i-stopped-waiting-and-started-coding-6886e12b62c4",
-    mode: "external",
-  },
-  {
     slug: "faclon-platform",
-    title: "Faclon Platform — UI/UX Iteration",
+    title: "Faclon Design System",
     company: "Faclon Labs",
     year: "2025",
     blurb:

@@ -132,7 +132,7 @@ function contactOutput(): Line[] {
     { kind: "kv", key: "email", value: c.email },
     { kind: "kv", key: "phone", value: c.phone },
     { kind: "kv", key: "linkedin", value: c.linkedin },
-    { kind: "kv", key: "behance", value: c.behance },
+    { kind: "kv", key: "medium", value: c.medium },
   ];
 }
 

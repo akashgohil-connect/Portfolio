@@ -1,9 +1,8 @@
 import { Folder, Globe, Music, SquareTerminal, User } from "lucide-react";
 import type { AppDef, AppId } from "@/lib/types";
 import { TerminalApp } from "@/components/apps/Terminal";
-import { ResumeApp } from "@/components/apps/Resume";
+import { ResumeApp, ResumeMobileHeaderRight } from "@/components/apps/Resume";
 import { BrowserApp } from "@/components/apps/Browser";
-import { PersonalApp } from "@/components/apps/Personal";
 import { SpotifyApp } from "@/components/apps/Spotify";
 
 export const APPS: Record<AppId, AppDef> = {
@@ -28,6 +27,7 @@ export const APPS: Record<AppId, AppDef> = {
     defaultSize: { width: 760, height: 920 },
     minSize: { width: 480, height: 480 },
     Component: ResumeApp,
+    mobileHeaderRight: () => <ResumeMobileHeaderRight />,
     desktop: false,
     dock: true,
   },
@@ -37,21 +37,9 @@ export const APPS: Record<AppId, AppDef> = {
     icon: Globe,
     iconColor: "#2b6cb0",
     iconImage: "/icons/browser.png",
-    defaultSize: { width: 960, height: 600 },
-    minSize: { width: 480, height: 320 },
+    defaultSize: { width: 1040, height: 680 },
+    minSize: { width: 720, height: 480 },
     Component: BrowserApp,
-    desktop: false,
-    dock: true,
-  },
-  personal: {
-    id: "personal",
-    title: "Personal",
-    icon: Folder,
-    iconColor: "#d24545",
-    iconImage: "/icons/personal.png",
-    defaultSize: { width: 520, height: 380 },
-    minSize: { width: 320, height: 240 },
-    Component: PersonalApp,
     desktop: false,
     dock: true,
   },
@@ -84,7 +72,6 @@ export const APP_ORDER: AppId[] = [
   "resume",
   "browser",
   "spotify",
-  "personal",
 ];
 
 export function getApp(id: AppId): AppDef {

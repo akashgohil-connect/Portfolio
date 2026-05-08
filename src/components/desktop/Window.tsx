@@ -61,16 +61,20 @@ export function Window({ app, win, isFocused }: Props) {
         role="dialog"
         aria-label={app.title}
       >
-        <header className="flex h-12 shrink-0 items-center justify-between border-b border-border bg-surface-muted px-4">
+        <header className="flex h-12 shrink-0 items-center justify-between gap-2 border-b border-border bg-surface-muted px-4">
           <button
             type="button"
             onClick={() => close(app.id)}
-            className="text-sm text-accent"
+            className="shrink-0 text-sm text-accent"
           >
             ← Back
           </button>
-          <h2 className="text-sm font-medium">{app.title}</h2>
-          <span className="w-12" />
+          <h2 className="flex-1 truncate text-center text-sm font-medium">
+            {app.title}
+          </h2>
+          <div className="flex min-w-[44px] shrink-0 justify-end">
+            {app.mobileHeaderRight?.()}
+          </div>
         </header>
         <div className="flex-1 overflow-auto">
           <Body />
