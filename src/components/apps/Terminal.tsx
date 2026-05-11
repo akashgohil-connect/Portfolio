@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { about, education, experience, skills } from "@/data/about";
 import { PROJECTS } from "@/data/projects";
 import { useWindows } from "@/store/windows";
@@ -367,6 +367,48 @@ function LineView({ line }: { line: Line }) {
   }
 }
 
+// --- Autocomplete -------------------------------------------------------
+
+const COMMAND_NAMES = [
+  "help",
+  "whoami",
+  "about",
+  "skills",
+  "experience",
+  "education",
+  "projects",
+  "contact",
+  "resume",
+  "ascii",
+  "neofetch",
+  "open",
+  "clear",
+  "exit",
+  "echo",
+  "date",
+];
+
+function computeCompletion(input: string, projectSlugs: string[]): string {
+  if (input.length === 0) return "";
+  const parts = input.split(" ");
+  if (parts.length === 1) {
+    const prefix = parts[0];
+    const match = COMMAND_NAMES.find(
+      (c) => c !== prefix && c.startsWith(prefix),
+    );
+    return match ? match.slice(prefix.length) : "";
+  }
+  if (parts.length === 2 && parts[0] === "open") {
+    const prefix = parts[1];
+    if (prefix.length === 0) return "";
+    const match = projectSlugs.find(
+      (s) => s !== prefix && s.startsWith(prefix),
+    );
+    return match ? match.slice(prefix.length) : "";
+  }
+  return "";
+}
+
 // --- Component -----------------------------------------------------------
 
 export function TerminalApp() {
@@ -378,6 +420,18 @@ export function TerminalApp() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const animCancelRef = useRef<(() => void) | null>(null);
+
+  const projectSlugs = useMemo(() => PROJECTS.map((p) => p.slug), []);
+  const completion = useMemo(
+    () => computeCompletion(input, projectSlugs),
+    [input, projectSlugs],
+  );
+
+  function acceptCompletion() {
+    if (!completion) return;
+    setInput(input + completion);
+    inputRef.current?.focus();
+  }
 
   function scheduleLines(newLines: Line[], onDone?: () => void) {
     animCancelRef.current?.();
@@ -576,6 +630,13 @@ export function TerminalApp() {
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      if (completion) {
+        setInput(input + completion);
+      }
+      return;
+    }
     if (e.key === "Enter") {
       const value = input;
       setInput("");
@@ -665,6 +726,19 @@ export function TerminalApp() {
                 />
               </span>
               <span aria-hidden className="terminal-caret" />
+              {completion && (
+                <span
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    acceptCompletion();
+                  }}
+                  className="cursor-pointer whitespace-pre select-none font-mono"
+                  style={{ color: C.faded, opacity: 0.6 }}
+                  title="Tap to autocomplete"
+                >
+                  {completion}
+                </span>
+              )}
             </span>
           </div>
         )}
