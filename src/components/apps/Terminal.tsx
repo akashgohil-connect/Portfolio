@@ -32,7 +32,7 @@ const C = {
   bg: "#15140f",
   bright: "#e6e3d8",
   muted: "#cfcdc2",
-  dim: "#9a9892",
+  dim: "#b8b6ab",
   faded: "#a4a194",
   green: "#7fb287",
   greenDim: "#4a6e54",
@@ -193,7 +193,13 @@ function LineView({ line }: { line: Line }) {
 
     case "banner":
       return (
-        <pre className="whitespace-pre" style={{ color: C.green }}>
+        <pre
+          className="whitespace-pre"
+          style={{
+            color: C.green,
+            textShadow: `0 0 8px ${C.green}22`,
+          }}
+        >
           {line.text}
         </pre>
       );
@@ -238,15 +244,17 @@ function LineView({ line }: { line: Line }) {
     case "section":
       return (
         <pre className="whitespace-pre">
-          <span style={{ color: C.green }}>▸ </span>
           <span
             style={{
-              color: C.amber,
-              letterSpacing: "0.08em",
+              color: C.bright,
+              letterSpacing: "0.14em",
               fontWeight: 600,
             }}
           >
             {line.label.toUpperCase()}
+          </span>
+          <span style={{ color: C.greenDim }}>
+            {"  " + "─".repeat(Math.max(2, BANNER_WIDTH - line.label.length - 2))}
           </span>
         </pre>
       );
