@@ -611,6 +611,21 @@ export function TerminalApp() {
       style={{ background: C.bg, color: C.bright }}
       onClick={() => inputRef.current?.focus()}
     >
+      <style>{`
+        @keyframes terminalBlink { 50% { opacity: 0 } }
+        .terminal-caret {
+          display: inline-block;
+          width: 0.6ch;
+          height: 1.1em;
+          margin-left: 1px;
+          vertical-align: -2px;
+          background: ${C.green};
+          animation: terminalBlink 1.1s steps(2, end) infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .terminal-caret { animation: none; }
+        }
+      `}</style>
       <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-2"
@@ -621,19 +636,36 @@ export function TerminalApp() {
         {introDone && (
           <div className="flex items-center gap-2">
             <span style={{ color: C.green }}>{PROMPT}</span>
-            <input
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={onKeyDown}
-              spellCheck={false}
-              autoCapitalize="off"
-              autoComplete="off"
-              autoCorrect="off"
-              className="flex-1 bg-transparent font-mono outline-none"
-              style={{ color: C.bright, caretColor: C.bright }}
-              aria-label="Terminal input"
-            />
+            <span className="relative flex min-w-0 flex-1 items-center">
+              <span className="relative inline-grid">
+                <span
+                  aria-hidden
+                  className="invisible whitespace-pre font-mono"
+                  style={{ gridArea: "1 / 1" }}
+                >
+                  {input || " "}
+                </span>
+                <input
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={onKeyDown}
+                  spellCheck={false}
+                  autoCapitalize="off"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  className="bg-transparent font-mono outline-none"
+                  style={{
+                    gridArea: "1 / 1",
+                    color: C.bright,
+                    caretColor: "transparent",
+                    width: "100%",
+                  }}
+                  aria-label="Terminal input"
+                />
+              </span>
+              <span aria-hidden className="terminal-caret" />
+            </span>
           </div>
         )}
       </div>
