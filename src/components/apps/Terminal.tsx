@@ -17,6 +17,7 @@ type Line =
   | { kind: "muted"; text: string }
   | { kind: "bullet"; text: string }
   | { kind: "command"; cmd: string; desc: string }
+  | { kind: "neofetch"; ascii: string[]; rows: Array<[string, string]> }
   | { kind: "blank" };
 
 const PROMPT = "akash@portfolio:~$";
@@ -148,9 +149,33 @@ const HELP_ITEMS: Array<[string, string]> = [
   ["contact", "ways to reach me"],
   ["resume", "open the resume"],
   ["ascii", "print the ASCII banner"],
+  ["neofetch", "system-style profile card"],
   ["clear", "clear the screen"],
   ["exit", "close the terminal"],
 ];
+
+function neofetchOutput(): Line[] {
+  return [
+    {
+      kind: "neofetch",
+      ascii: [
+        "  ▄▀█ █▀▀",
+        "  █▀█ █▄█",
+        "",
+        "  ──────",
+      ],
+      rows: [
+        ["host", about.name],
+        ["role", about.role],
+        ["where", about.location],
+        ["uptime", "2+ years"],
+        ["stack", "Next.js · React · TypeScript · Tailwind · Framer Motion"],
+        ["theme", "Tahoe Dim"],
+        ["shell", "akash-sh"],
+      ],
+    },
+  ];
+}
 
 function helpOutput(): Line[] {
   return [
@@ -181,6 +206,9 @@ function lineLength(line: Line): number {
       return line.key.length + line.value.length;
     case "command":
       return line.cmd.length + line.desc.length;
+    case "neofetch":
+      return line.ascii.reduce((max, l) => Math.max(max, l.length), 0)
+        + line.rows.reduce((sum, [k, v]) => sum + k.length + v.length, 0);
   }
 }
 
@@ -304,6 +332,36 @@ function LineView({ line }: { line: Line }) {
           <span style={{ color: C.green }}>{`  ${padded}  `}</span>
           <span style={{ color: C.dim }}>{line.desc}</span>
         </pre>
+      );
+    }
+
+    case "neofetch": {
+      return (
+        <div className="flex flex-wrap items-start gap-x-6 gap-y-2 py-1 sm:flex-nowrap">
+          <pre
+            className="whitespace-pre shrink-0"
+            style={{
+              color: C.green,
+              textShadow: `0 0 8px ${C.green}22`,
+            }}
+          >
+            {line.ascii.join("\n")}
+          </pre>
+          <div className="min-w-0 flex-1">
+            {line.rows.map(([k, v]) => (
+              <pre
+                key={k}
+                className="whitespace-pre-wrap break-words"
+              >
+                <span style={{ color: C.cyan, fontWeight: 600 }}>
+                  {k.padEnd(10).slice(0, 10)}
+                </span>
+                <span style={{ color: C.dim }}>{"  "}</span>
+                <span style={{ color: C.bright }}>{v}</span>
+              </pre>
+            ))}
+          </div>
+        </div>
       );
     }
   }
@@ -477,6 +535,10 @@ export function TerminalApp() {
       case "ascii":
       case "banner":
         out.push(...bannerLines(), { kind: "rule", text: RULE });
+        break;
+      case "neofetch":
+      case "fetch":
+        out.push(...neofetchOutput());
         break;
       case "open": {
         const slug = args[0];
