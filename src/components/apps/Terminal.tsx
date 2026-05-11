@@ -319,6 +319,61 @@ export function TerminalApp() {
   const [introDone, setIntroDone] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const animCancelRef = useRef<(() => void) | null>(null);
+
+  function scheduleLines(newLines: Line[], onDone?: () => void) {
+    animCancelRef.current?.();
+
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduced || newLines.length === 0) {
+      setLines((prev) => [...prev, ...newLines]);
+      animCancelRef.current = null;
+      onDone?.();
+      return;
+    }
+
+    let cancelled = false;
+    let idx = 0;
+    let timerId: ReturnType<typeof setTimeout> | null = null;
+
+    const cancel = () => {
+      cancelled = true;
+      if (timerId !== null) clearTimeout(timerId);
+      const remaining = newLines.slice(idx);
+      if (remaining.length > 0) {
+        setLines((prev) => [...prev, ...remaining]);
+      }
+      animCancelRef.current = null;
+    };
+
+    const tick = () => {
+      if (cancelled) return;
+      if (idx >= newLines.length) {
+        animCancelRef.current = null;
+        onDone?.();
+        return;
+      }
+      const line = newLines[idx];
+      setLines((prev) => [...prev, line]);
+      idx += 1;
+      const len = lineLength(line);
+      const delay =
+        len === 0
+          ? 14
+          : line.kind === "banner"
+            ? 20
+            : line.kind === "rule" || line.kind === "section"
+              ? 24
+              : Math.min(45, 12 + len * 0.6);
+      timerId = setTimeout(tick, delay);
+    };
+
+    animCancelRef.current = cancel;
+    timerId = setTimeout(tick, 0);
+  }
 
   // Typewriter intro.
   useEffect(() => {
@@ -372,52 +427,56 @@ export function TerminalApp() {
     if (introDone) inputRef.current?.focus();
   }, [introDone]);
 
-  function append(...newLines: Line[]) {
-    setLines((prev) => [...prev, ...newLines]);
-  }
+  // Cleanup timers on unmount.
+  useEffect(() => {
+    return () => {
+      animCancelRef.current?.();
+    };
+  }, []);
 
   function runCommand(raw: string) {
     const cmd = raw.trim();
-    append({ kind: "input", text: `${PROMPT} ${cmd}` });
+    setLines((prev) => [...prev, { kind: "input", text: `${PROMPT} ${cmd}` }]);
     if (!cmd) return;
 
     const [name, ...args] = cmd.split(/\s+/);
-    const error = (text: string) => append({ kind: "output", text });
+    const out: Line[] = [];
+    const error = (text: string) => out.push({ kind: "output", text });
 
     switch (name.toLowerCase()) {
       case "help":
-        append(...helpOutput());
+        out.push(...helpOutput());
         break;
       case "whoami":
-        append(...whoamiOutput());
+        out.push(...whoamiOutput());
         break;
       case "about":
-        append(...aboutOutput());
+        out.push(...aboutOutput());
         break;
       case "skills":
-        append(...skillsOutput());
+        out.push(...skillsOutput());
         break;
       case "experience":
       case "exp":
-        append(...experienceOutput());
+        out.push(...experienceOutput());
         break;
       case "education":
-        append(...educationOutput());
+        out.push(...educationOutput());
         break;
       case "projects":
       case "ls":
-        append(...projectsOutput());
+        out.push(...projectsOutput());
         break;
       case "contact":
-        append(...contactOutput());
+        out.push(...contactOutput());
         break;
       case "resume":
         useWindows.getState().open("resume");
-        append({ kind: "muted", text: "Opening resume…" });
+        out.push({ kind: "muted", text: "Opening resume…" });
         break;
       case "ascii":
       case "banner":
-        append(...bannerLines(), { kind: "rule", text: RULE });
+        out.push(...bannerLines(), { kind: "rule", text: RULE });
         break;
       case "open": {
         const slug = args[0];
@@ -429,11 +488,12 @@ export function TerminalApp() {
         if (typeof window !== "undefined") {
           window.open(project.url, "_blank", "noopener,noreferrer");
         }
-        append({ kind: "muted", text: `Opening ${project.title} in a new tab…` });
+        out.push({ kind: "muted", text: `Opening ${project.title} in a new tab…` });
         break;
       }
       case "clear":
       case "cls":
+        animCancelRef.current?.();
         setLines([]);
         return;
       case "exit":
@@ -441,14 +501,16 @@ export function TerminalApp() {
         useWindows.getState().close("terminal");
         return;
       case "echo":
-        append({ kind: "output", text: args.join(" ") });
+        out.push({ kind: "output", text: args.join(" ") });
         break;
       case "date":
-        append({ kind: "output", text: new Date().toString() });
+        out.push({ kind: "output", text: new Date().toString() });
         break;
       default:
         error(`command not found: ${name}. Type 'help'.`);
     }
+
+    scheduleLines(out);
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
