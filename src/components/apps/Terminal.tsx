@@ -678,7 +678,7 @@ export function TerminalApp() {
           display: inline-block;
           width: 0.6ch;
           height: 1.1em;
-          margin-left: 1px;
+          margin-left: 0;
           vertical-align: -2px;
           background: ${C.green};
           animation: terminalBlink 1.1s steps(2, end) infinite;
@@ -695,7 +695,7 @@ export function TerminalApp() {
           <LineView key={i} line={line} />
         ))}
         {introDone && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <span style={{ color: C.green }}>{PROMPT}</span>
             <span className="relative flex min-w-0 flex-1 items-center">
               <span className="relative inline-grid">
@@ -715,12 +715,16 @@ export function TerminalApp() {
                   autoCapitalize="off"
                   autoComplete="off"
                   autoCorrect="off"
+                  size={1}
                   className="bg-transparent font-mono outline-none"
                   style={{
                     gridArea: "1 / 1",
                     color: C.bright,
                     caretColor: "transparent",
                     width: "100%",
+                    padding: 0,
+                    border: 0,
+                    margin: 0,
                   }}
                   aria-label="Terminal input"
                 />
